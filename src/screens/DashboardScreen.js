@@ -1,5 +1,6 @@
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { BarChart, LineChart, PieChart, ProgressChart } from 'react-native-chart-kit';
+import { BarChart, LineChart } from 'react-native-chart-kit';
+import AttendanceRing from '../components/AttendanceRing';
 import Card from '../components/Card';
 import ChartCard from '../components/ChartCard';
 import InsightRow from '../components/InsightRow';
@@ -10,10 +11,13 @@ import { getTotalCredits } from '../utils/courses';
 import { average, getCourseStats, getWeeklyAttendance } from '../utils/dashboard';
 import { getFeeItems, getFeeTotal } from '../utils/fees';
 import { formatMoney } from '../utils/helpers';
-import { chartColors, colors } from '../theme';
+import { colors } from '../theme';
 
 // Charts fill the card: screen width minus the screen's 20px padding on each side
 const CHART_WIDTH = Dimensions.get('window').width - 40;
+
+// Three attendance rings per row (minus the card's 16px side padding)
+const RING_SIZE = Math.floor((CHART_WIDTH - 32) / 3);
 
 // Shared dark look for every chart
 const chartConfig = {
@@ -48,13 +52,10 @@ export default function DashboardScreen({ registrations, attendance, challan, in
   if (challan !== null) feeStatus = challan.paid ? 'Paid' : 'Unpaid';
 
   // ---- Data for each chart ----
-  // 1. Progress rings: attendance of courses that have classes
-  const withAttendance = stats.filter((s) => s.attendance !== null);
-  const ringData = {
-    labels: withAttendance.map((s) => s.code),
-    data: withAttendance.map((s) => s.attendance / 100),
-    colors: withAttendance.map((s) => levelColor(s.attendance, ATTENDANCE_THRESHOLD, ATTENDANCE_THRESHOLD + 5)),
-  };
+  // 1. Progress rings: one per course that has classes, lowest attendance first
+  const withAttendance = stats
+    .filter((s) => s.attendance !== null)
+    .sort((a, b) => a.attendance - b.attendance);
 
   // 2. Line: overall attendance week by week, with the minimum as a second line
   const weekly = getWeeklyAttendance(registrations, attendance);
@@ -83,15 +84,6 @@ export default function DashboardScreen({ registrations, attendance, challan, in
       },
     ],
   };
-
-  // 4. Pie: how the semester fee is split between courses
-  const pieData = feeItems.map((item, index) => ({
-    name: item.code,
-    amount: item.amount,
-    color: chartColors[index % chartColors.length],
-    legendFontColor: colors.subtext,
-    legendFontSize: 12,
-  }));
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -141,15 +133,17 @@ export default function DashboardScreen({ registrations, attendance, challan, in
         isEmpty={withAttendance.length === 0}
         emptyText="No classes recorded yet."
       >
-        <ProgressChart
-          data={ringData}
-          width={CHART_WIDTH}
-          height={200}
-          strokeWidth={10}
-          radius={28}
-          chartConfig={chartConfig}
-          withCustomBarColorFromData
-        />
+        <View style={styles.rings}>
+          {withAttendance.map((s) => (
+            <AttendanceRing
+              key={s.code}
+              label={s.code}
+              percent={s.attendance}
+              color={levelColor(s.attendance, ATTENDANCE_THRESHOLD, ATTENDANCE_THRESHOLD + 5)}
+              size={RING_SIZE}
+            />
+          ))}
+        </View>
       </ChartCard>
 
       <ChartCard
@@ -187,23 +181,6 @@ export default function DashboardScreen({ registrations, attendance, challan, in
           chartConfig={chartConfig}
         />
       </ChartCard>
-
-      <ChartCard
-        title="Fee split"
-        subtitle={`${formatMoney(feeTotal)} across ${feeItems.length} courses`}
-        isEmpty={feeItems.length === 0}
-        emptyText="No courses registered."
-      >
-        <PieChart
-          data={pieData}
-          width={CHART_WIDTH}
-          height={200}
-          accessor="amount"
-          backgroundColor="transparent"
-          paddingLeft="12"
-          chartConfig={chartConfig}
-        />
-      </ChartCard>
     </ScrollView>
   );
 }
@@ -229,6 +206,12 @@ const styles = StyleSheet.create({
   insights: {
     paddingVertical: 4,
     marginBottom: 24,
+  },
+  rings: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'stretch',
+    paddingHorizontal: 16,
   },
   allGood: {
     color: colors.subtext,

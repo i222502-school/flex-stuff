@@ -26,7 +26,7 @@ The app keeps all of the student's data in one place and **does those calculatio
 | **Marks** | Course picker, weighted marks and grade estimate, assessments grouped by type, and a **What-if calculator** (validated input) that shows the projected grade and the % needed for an A, B or C |
 | **Attendance** | Hours (1.5 hrs per class) and %, an 80% threshold marker, "You can miss N classes" / "Attend the next N classes" messages, courses sorted by risk, an At-risk filter, and **mark today's class** or tap a record to change it |
 | **Fee Challan** | Per-course breakdown (credit hours × rate), challan generation (ID, issue and due date), mark as paid, and a warning when registration changes after the challan was generated |
-| **Dashboard** | Stat tiles, the Needs-attention list, and 4 charts from **react-native-chart-kit**: ProgressChart (attendance per course), LineChart (weekly attendance trend vs the 80% minimum), BarChart (marks per course), PieChart (fee split) |
+| **Dashboard** | Stat tiles, the Needs-attention list, and 3 chart types from **react-native-chart-kit**: ProgressChart (one ring per course, % in the middle, red below 80%), LineChart (weekly attendance trend vs the 80% minimum), BarChart (marks per course) |
 
 Every screen reads the same state, so changing data updates the whole app. Registering a course, marking an absence or generating a challan immediately changes the warnings, the charts and the fee.
 
@@ -35,12 +35,12 @@ Every screen reads the same state, so changing data updates the whole app. Regis
 | Requirement | Where |
 |---|---|
 | No navigation library, no side or bottom bars | `App.js`: a `view` state and conditional rendering switch screens. The Android back button returns to Home (`BackHandler`) |
-| Components, props, state, events | `src/components/` (21 reusable components). Shared state lives in `App.js` and is passed down as props |
+| Components, props, state, events | `src/components/` (22 reusable components). Shared state lives in `App.js` and is passed down as props |
 | Data-driven UI | Every list is drawn with `.map()` from arrays and objects in `src/data/` |
 | Array methods and calculations | `src/utils/`: `filter`, `map`, `reduce`, `find`, `some`, `sort`, `flatMap` |
 | Form and validation | Marks What-if `TextInput` (`keyboardType="numeric"`, `maxLength`, range check and error message) and the registration search and section rules |
 | Application states | Empty states on every screen, no marks yet, no classes yet, full sections, credit limit, outdated or overdue challan |
-| Dashboard with 2+ chart types | `src/screens/DashboardScreen.js` uses 4 chart types |
+| Dashboard with 2+ chart types | `src/screens/DashboardScreen.js` uses 3 chart types (Progress, Line, Bar) |
 
 ## Project structure
 
@@ -94,4 +94,4 @@ _Add screenshots or a demo video link here._
 
 ## AI usage
 
-See [AI_USAGE_REPORT.md](AI_USAGE_REPORT.md).
+The AI usage report is submitted separately.
