@@ -1,4 +1,4 @@
-# FLEX Portal: a student portal that warns you early
+# Better FLEX: a student portal that warns you early
 
 A React Native (Expo) remake of the FAST FLEX student portal, styled like Spotify's dark theme.
 
@@ -76,7 +76,7 @@ Requirements: Node.js 18+ and the **Expo Go** app on an Android or iOS phone.
 
 ```bash
 git clone <repo-url>
-cd flex-portal
+cd better-flex
 npm install
 npx expo start
 ```

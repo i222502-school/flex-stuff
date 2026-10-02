@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FLEX Portal",
-    "slug": "flex-portal",
+    "name": "Better FLEX",
+    "slug": "better-flex",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
