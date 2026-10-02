@@ -31,6 +31,12 @@ const chartConfig = {
   barPercentage: 0.7,
 };
 
+// Bars use their own course colours; white here keeps the value labels above them neutral
+const barConfig = {
+  ...chartConfig,
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+};
+
 // Status text under each attendance ring (same statuses as the Attendance screen)
 const RING_STATUS = {
   safe: { text: 'Safe', color: colors.primary },
@@ -183,10 +189,13 @@ export default function DashboardScreen({ registrations, attendance, challan, in
           yAxisLabel=""
           yAxisSuffix="%"
           fromZero
+          fromNumber={100}
+          segments={4}
           showValuesOnTopOfBars
+          showBarTops={false}
           withCustomBarColorFromData
           flatColor
-          chartConfig={chartConfig}
+          chartConfig={barConfig}
         />
       </ChartCard>
     </ScrollView>

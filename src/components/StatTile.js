@@ -7,7 +7,9 @@ export default function StatTile({ label, value, caption, color = colors.text })
   return (
     <Card style={styles.tile}>
       <Text style={styles.label}>{label}</Text>
-      <Text style={[styles.value, { color }]}>{value}</Text>
+      <Text style={[styles.value, { color }]} numberOfLines={1} adjustsFontSizeToFit>
+        {value}
+      </Text>
       <Text style={styles.caption}>{caption}</Text>
     </Card>
   );

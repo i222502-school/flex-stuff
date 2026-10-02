@@ -90,7 +90,21 @@ Scan the QR code with Expo Go (Android) or the Camera app (iOS). The phone and t
 
 ## Screenshots
 
-_Add screenshots or a demo video link here._
+| Home | Academic calendar | Profile |
+|---|---|---|
+| <img src="docs/screenshots/01-home.jpeg" width="220"> | <img src="docs/screenshots/02-home-calendar.jpeg" width="220"> | <img src="docs/screenshots/03-profile.jpeg" width="220"> |
+
+| Registration | Marks | Marks: assessments |
+|---|---|---|
+| <img src="docs/screenshots/04-registration.jpeg" width="220"> | <img src="docs/screenshots/05-marks.jpeg" width="220"> | <img src="docs/screenshots/06-marks-assessments.jpeg" width="220"> |
+
+| Attendance | Fee | Generated challan |
+|---|---|---|
+| <img src="docs/screenshots/07-attendance.jpeg" width="220"> | <img src="docs/screenshots/08-fee.jpeg" width="220"> | <img src="docs/screenshots/09-fee-challan.jpeg" width="220"> |
+
+| Dashboard | Attendance by course | Trend and marks |
+|---|---|---|
+| <img src="docs/screenshots/10-dashboard.jpeg" width="220"> | <img src="docs/screenshots/11-dashboard-attendance-rings.jpeg" width="220"> | <img src="docs/screenshots/12-dashboard-trend-and-marks.jpeg" width="220"> |
 
 ## AI usage
 
