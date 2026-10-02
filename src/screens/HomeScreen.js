@@ -1,9 +1,16 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Badge from '../components/Badge';
+import CalendarEvent from '../components/CalendarEvent';
 import Card from '../components/Card';
 import MenuTile from '../components/MenuTile';
 import { student } from '../data/student';
+import { calendar } from '../data/calendar';
 import { menuItems } from '../data/menu';
+import { getEventStatus, getInitials, getToday } from '../utils/helpers';
 import { colors } from '../theme';
+
+// Calendar events are shown in this order: what's happening now comes first
+const STATUS_ORDER = { Ongoing: 0, Upcoming: 1, TBA: 2, Ended: 3 };
 
 // "Good morning / afternoon / evening" depending on the current hour
 function getGreeting() {
@@ -15,16 +22,14 @@ function getGreeting() {
 
 // onOpen(key) is passed down from App.js — it changes which view is shown.
 export default function HomeScreen({ onOpen }) {
-  // "Talha Aamir" -> "TA"
-  const initials = student.personal.name
-    .split(' ')
-    .map((word) => word[0])
-    .join('');
-
   // Small pills under the name, built from the student object
   const details = [student.degree, `Batch ${student.batch}`, student.section, student.campus];
 
-  const isCurrent = student.status === 'Current';
+  // Add a status to every event, then sort by STATUS_ORDER
+  const today = getToday();
+  const events = calendar
+    .map((event) => getEventStatus(event, today))
+    .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -33,22 +38,13 @@ export default function HomeScreen({ onOpen }) {
       <Card style={styles.profileCard}>
         <View style={styles.row}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{initials}</Text>
+            <Text style={styles.avatarText}>{getInitials(student.personal.name)}</Text>
           </View>
           <View style={styles.nameBlock}>
             <Text style={styles.name}>{student.personal.name}</Text>
             <Text style={styles.rollNo}>{student.rollNo}</Text>
           </View>
-          <View
-            style={[
-              styles.statusBadge,
-              { backgroundColor: isCurrent ? colors.successLight : colors.warningLight },
-            ]}
-          >
-            <Text style={[styles.statusText, { color: isCurrent ? colors.success : colors.warning }]}>
-              {student.status}
-            </Text>
-          </View>
+          <Badge label={student.status} tone={student.status === 'Current' ? 'success' : 'warning'} />
         </View>
 
         <View style={styles.pills}>
@@ -73,6 +69,17 @@ export default function HomeScreen({ onOpen }) {
           />
         ))}
       </View>
+
+      <Text style={styles.sectionTitle}>Academic calendar</Text>
+      <Card style={styles.calendarCard}>
+        {events.length === 0 ? (
+          <Text style={styles.empty}>No calendar events yet.</Text>
+        ) : (
+          events.map((event, index) => (
+            <CalendarEvent key={event.id} event={event} isLast={index === events.length - 1} />
+          ))
+        )}
+      </Card>
     </ScrollView>
   );
 }
@@ -121,15 +128,6 @@ const styles = StyleSheet.create({
     color: colors.subtext,
     marginTop: 2,
   },
-  statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '700',
-  },
   pills: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -156,5 +154,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  calendarCard: {
+    paddingVertical: 4,
+    marginBottom: 20,
+  },
+  empty: {
+    color: colors.subtext,
+    paddingVertical: 16,
+    textAlign: 'center',
   },
 });
