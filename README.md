@@ -108,4 +108,4 @@ Scan the QR code with Expo Go (Android) or the Camera app (iOS). The phone and t
 
 ## AI usage
 
-The AI usage report is submitted separately.
+See [AI Usage Report.pdf](AI%20Usage%20Report.pdf).
