@@ -15,3 +15,6 @@ export const colors = {
   danger: '#E91429',
   dangerLight: 'rgba(233, 20, 41, 0.15)',
 };
+
+// One colour per course in charts (pie slices, rings)
+export const chartColors = ['#1DB954', '#509BF5', '#AF2896', '#F59B23', '#E8115B', '#8D67AB', '#27856A', '#E1118C'];

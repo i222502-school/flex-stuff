@@ -3,6 +3,12 @@
 // Minimum attendance percentage required to sit the final exam
 export const ATTENDANCE_THRESHOLD = 80;
 
+// First day of classes — attendance weeks on the dashboard count from here
+export const SEMESTER_START = '2026-08-17';
+
+// Courses whose weighted marks are below this % get a warning on the dashboard
+export const LOW_MARKS_PERCENT = 60;
+
 // Every class (theory or lab) counts as 1.5 hours of attendance
 export const HOURS_PER_CLASS = 1.5;
 

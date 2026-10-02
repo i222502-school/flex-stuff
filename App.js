@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { BackHandler, Platform, StatusBar as RNStatusBar, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Platform, StatusBar as RNStatusBar, StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
 import AttendanceScreen from './src/screens/AttendanceScreen';
+import DashboardScreen from './src/screens/DashboardScreen';
 import FeeScreen from './src/screens/FeeScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import MarksScreen from './src/screens/MarksScreen';
@@ -12,6 +13,7 @@ import ScreenHeader from './src/components/ScreenHeader';
 import { attendance } from './src/data/attendance';
 import { initialRegistrations } from './src/data/courses';
 import { menuItems } from './src/data/menu';
+import { getInsights } from './src/utils/insights';
 import { colors } from './src/theme';
 
 export default function App() {
@@ -26,6 +28,10 @@ export default function App() {
 
   // The generated fee challan (null until the student generates one)
   const [challan, setChallan] = useState(null);
+
+  // Warnings worked out from the state above — recalculated on every render,
+  // so they are always up to date (used by Home and Dashboard)
+  const insights = getInsights(registrations, attendanceRecords, challan);
 
   // Android back button: go back to home instead of closing the app.
   // Re-registered whenever `view` changes; the old listener is removed first.
@@ -63,14 +69,22 @@ export default function App() {
     if (view === 'fee') {
       return <FeeScreen registrations={registrations} challan={challan} setChallan={setChallan} />;
     }
-    return <Text style={styles.placeholder}>Coming soon</Text>;
+    return (
+      <DashboardScreen
+        registrations={registrations}
+        attendance={attendanceRecords}
+        challan={challan}
+        insights={insights}
+        onOpen={setView}
+      />
+    );
   }
 
   if (view === 'home') {
     return (
       <View style={styles.container}>
         <StatusBar style="light" />
-        <HomeScreen onOpen={setView} />
+        <HomeScreen onOpen={setView} insights={insights} />
       </View>
     );
   }
@@ -92,9 +106,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     // Keep content below the phone's status bar (Android draws edge-to-edge)
     paddingTop: Platform.OS === 'android' ? RNStatusBar.currentHeight : 50,
-  },
-  placeholder: {
-    paddingHorizontal: 20,
-    color: colors.subtext,
   },
 });

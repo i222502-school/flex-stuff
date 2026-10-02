@@ -4,7 +4,7 @@ import AttendanceCard from '../components/AttendanceCard';
 import Card from '../components/Card';
 import FilterPills from '../components/FilterPills';
 import { ATTENDANCE_THRESHOLD, HOURS_PER_CLASS } from '../constants';
-import { getAttendanceSummary } from '../utils/attendance';
+import { getAttendanceSummary, getOverallAttendance } from '../utils/attendance';
 import { getRegisteredCourses } from '../utils/courses';
 import { getToday } from '../utils/helpers';
 import { colors } from '../theme';
@@ -38,9 +38,7 @@ export default function AttendanceScreen({ registrations, attendance, setAttenda
       : sorted;
 
   // Overall numbers across all registered courses
-  const totalClasses = courses.reduce((sum, c) => sum + c.summary.total, 0);
-  const attendedClasses = courses.reduce((sum, c) => sum + c.summary.attended, 0);
-  const overall = totalClasses > 0 ? (attendedClasses / totalClasses) * 100 : null;
+  const overall = getOverallAttendance(registrations, attendance);
   const shortCount = courses.filter((c) => c.summary.status === 'short').length;
 
   // Replace one course's list of records, keeping every other course the same

@@ -51,3 +51,9 @@ export function getAttendanceSummary(records) {
     message,
   };
 }
+
+// Overall % across all registered courses: every class counts once
+export function getOverallAttendance(registrations, attendance) {
+  const allRecords = registrations.flatMap((r) => attendance[r.code] || []);
+  return getAttendanceSummary(allRecords).percent;
+}

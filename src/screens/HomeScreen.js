@@ -1,7 +1,8 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Badge from '../components/Badge';
 import CalendarEvent from '../components/CalendarEvent';
 import Card from '../components/Card';
+import Icon from '../components/Icon';
 import MenuTile from '../components/MenuTile';
 import { student } from '../data/student';
 import { calendar } from '../data/calendar';
@@ -21,7 +22,11 @@ function getGreeting() {
 }
 
 // onOpen(key) is passed down from App.js — it changes which view is shown.
-export default function HomeScreen({ onOpen }) {
+// insights is the "Needs attention" list worked out in App.js.
+export default function HomeScreen({ onOpen, insights }) {
+  const dangerCount = insights.filter((i) => i.tone === 'danger').length;
+  const bannerColor = dangerCount > 0 ? colors.danger : colors.warning;
+
   // Small pills under the name, built from the student object
   const details = [student.degree, `Batch ${student.batch}`, student.section, student.campus];
 
@@ -55,6 +60,25 @@ export default function HomeScreen({ onOpen }) {
           ))}
         </View>
       </Card>
+
+      {/* Only shown when something needs attention; tapping opens the dashboard */}
+      {insights.length > 0 && (
+        <Pressable
+          onPress={() => onOpen('dashboard')}
+          style={({ pressed }) => [styles.banner, { borderColor: bannerColor }, pressed && styles.pressed]}
+        >
+          <Icon name="alert" size={24} color={bannerColor} />
+          <View style={styles.bannerText}>
+            <Text style={styles.bannerTitle}>
+              {insights.length} {insights.length === 1 ? 'thing needs' : 'things need'} attention
+            </Text>
+            <Text style={styles.bannerSubtitle} numberOfLines={1}>
+              {insights[0].title}
+            </Text>
+          </View>
+          <Icon name="forward" size={18} color={colors.subtext} />
+        </Pressable>
+      )}
 
       <Text style={styles.sectionTitle}>Your portal</Text>
       <View style={styles.grid}>
@@ -95,7 +119,32 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   profileCard: {
-    marginBottom: 28,
+    marginBottom: 16,
+  },
+  banner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.card,
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 14,
+  },
+  pressed: {
+    opacity: 0.6,
+  },
+  bannerText: {
+    flex: 1,
+    marginHorizontal: 12,
+  },
+  bannerTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  bannerSubtitle: {
+    fontSize: 12,
+    color: colors.subtext,
+    marginTop: 2,
   },
   row: {
     flexDirection: 'row',
@@ -148,6 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '800',
     color: colors.text,
+    marginTop: 12,
     marginBottom: 14,
   },
   grid: {
