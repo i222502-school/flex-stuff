@@ -7,6 +7,7 @@ const tones = {
   warning: { color: colors.warning, backgroundColor: colors.warningLight },
   danger: { color: colors.danger, backgroundColor: colors.dangerLight },
   neutral: { color: colors.subtext, backgroundColor: colors.cardHighlight },
+  light: { color: colors.text, backgroundColor: colors.cardHighlight },
 };
 
 // Small rounded label, e.g. <Badge label="Ongoing" tone="success" />

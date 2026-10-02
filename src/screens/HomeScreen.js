@@ -44,7 +44,7 @@ export default function HomeScreen({ onOpen }) {
             <Text style={styles.name}>{student.personal.name}</Text>
             <Text style={styles.rollNo}>{student.rollNo}</Text>
           </View>
-          <Badge label={student.status} tone={student.status === 'Current' ? 'success' : 'warning'} />
+          <Badge label={student.status} tone={student.status === 'Current' ? 'light' : 'warning'} />
         </View>
 
         <View style={styles.pills}>
