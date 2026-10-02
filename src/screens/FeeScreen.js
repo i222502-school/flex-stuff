@@ -67,6 +67,7 @@ export default function FeeScreen({ registrations, challan, setChallan }) {
             title={item.name}
             subtitle={`${item.code} · ${item.credits} CH`}
             amount={formatMoney(item.amount)}
+            color={item.color}
             isLast={index === items.length - 1}
           />
         ))}

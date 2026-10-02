@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import AssessmentGroup from '../components/AssessmentGroup';
 import Card from '../components/Card';
+import CourseDot from '../components/CourseDot';
 import FilterPills from '../components/FilterPills';
 import ProgressBar from '../components/ProgressBar';
 import WhatIfCalculator from '../components/WhatIfCalculator';
@@ -35,9 +36,12 @@ export default function MarksScreen({ registrations }) {
         <View style={styles.summaryRow}>
           <View style={styles.summaryText}>
             <Text style={styles.courseName}>{course.name}</Text>
-            <Text style={styles.courseMeta}>
-              {course.code} · Section {course.section}
-            </Text>
+            <View style={styles.metaRow}>
+              <CourseDot color={course.color} />
+              <Text style={styles.courseMeta}>
+                {course.code} · Section {course.section}
+              </Text>
+            </View>
           </View>
           <View style={styles.gradeCircle}>
             <Text style={styles.gradeText}>{hasMarks ? getGrade(result.percent) : '–'}</Text>
@@ -101,10 +105,14 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: colors.text,
   },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
   courseMeta: {
     fontSize: 13,
     color: colors.subtext,
-    marginTop: 2,
   },
   gradeCircle: {
     width: 52,

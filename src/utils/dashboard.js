@@ -6,12 +6,17 @@ import { getCourseResult } from './marks';
 
 // Attendance % and marks % of every registered course (null when there is no data yet)
 export function getCourseStats(registrations, attendance) {
-  return getRegisteredCourses(registrations).map((course) => ({
-    code: course.code,
-    name: course.name,
-    attendance: getAttendanceSummary(attendance[course.code] || []).percent,
-    marks: getCourseResult(course).percent,
-  }));
+  return getRegisteredCourses(registrations).map((course) => {
+    const summary = getAttendanceSummary(attendance[course.code] || []);
+    return {
+      code: course.code,
+      name: course.name,
+      color: course.color,
+      attendance: summary.percent,
+      attendanceStatus: summary.status,
+      marks: getCourseResult(course).percent,
+    };
+  });
 }
 
 // Average of the numbers in a list, ignoring nulls (null if nothing is left)

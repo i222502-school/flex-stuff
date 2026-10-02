@@ -31,6 +31,13 @@ const chartConfig = {
   barPercentage: 0.7,
 };
 
+// Status text under each attendance ring (same statuses as the Attendance screen)
+const RING_STATUS = {
+  safe: { text: 'Safe', color: colors.primary },
+  risk: { text: 'At risk', color: colors.warning },
+  short: { text: 'Short', color: colors.danger },
+};
+
 // Red / orange / green depending on how a % compares to the limits
 function levelColor(percent, dangerBelow, warningBelow) {
   if (percent < dangerBelow) return colors.danger;
@@ -80,7 +87,7 @@ export default function DashboardScreen({ registrations, attendance, challan, in
     datasets: [
       {
         data: withMarks.map((s) => Number(s.marks.toFixed(1))),
-        colors: withMarks.map((s) => () => levelColor(s.marks, 50, 70)),
+        colors: withMarks.map((s) => () => s.color),
       },
     ],
   };
@@ -129,7 +136,7 @@ export default function DashboardScreen({ registrations, attendance, challan, in
 
       <ChartCard
         title="Attendance by course"
-        subtitle={`Red rings are below ${ATTENDANCE_THRESHOLD}%`}
+        subtitle={`Minimum ${ATTENDANCE_THRESHOLD}% · lowest first`}
         isEmpty={withAttendance.length === 0}
         emptyText="No classes recorded yet."
       >
@@ -139,7 +146,8 @@ export default function DashboardScreen({ registrations, attendance, challan, in
               key={s.code}
               label={s.code}
               percent={s.attendance}
-              color={levelColor(s.attendance, ATTENDANCE_THRESHOLD, ATTENDANCE_THRESHOLD + 5)}
+              color={s.color}
+              status={RING_STATUS[s.attendanceStatus]}
               size={RING_SIZE}
             />
           ))}
@@ -164,7 +172,7 @@ export default function DashboardScreen({ registrations, attendance, challan, in
 
       <ChartCard
         title="Marks by course"
-        subtitle="Weighted marks so far (%)"
+        subtitle="Weighted marks so far (%) · each bar in its course colour"
         isEmpty={withMarks.length === 0}
         emptyText="No marks uploaded yet."
       >

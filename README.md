@@ -35,7 +35,7 @@ Every screen reads the same state, so changing data updates the whole app. Regis
 | Requirement | Where |
 |---|---|
 | No navigation library, no side or bottom bars | `App.js`: a `view` state and conditional rendering switch screens. The Android back button returns to Home (`BackHandler`) |
-| Components, props, state, events | `src/components/` (22 reusable components). Shared state lives in `App.js` and is passed down as props |
+| Components, props, state, events | `src/components/` (23 reusable components). Shared state lives in `App.js` and is passed down as props |
 | Data-driven UI | Every list is drawn with `.map()` from arrays and objects in `src/data/` |
 | Array methods and calculations | `src/utils/`: `filter`, `map`, `reduce`, `find`, `some`, `sort`, `flatMap` |
 | Form and validation | Marks What-if `TextInput` (`keyboardType="numeric"`, `maxLength`, range check and error message) and the registration search and section rules |

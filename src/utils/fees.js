@@ -10,6 +10,7 @@ export function getFeeItems(registrations) {
     return {
       code: course.code,
       name: course.name,
+      color: course.color,
       credits,
       amount: credits * FEE_PER_CREDIT_HOUR,
     };

@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Badge from './Badge';
 import Card from './Card';
+import CourseDot from './CourseDot';
 import PillButton from './PillButton';
 import ProgressBar from './ProgressBar';
 import { ATTENDANCE_THRESHOLD } from '../constants';
@@ -34,7 +35,10 @@ export default function AttendanceCard({ course, records, summary, expanded, onT
       <Pressable onPress={onToggle}>
         <View style={styles.top}>
           <View style={styles.titleBlock}>
-            <Text style={styles.code}>{course.code}</Text>
+            <View style={styles.codeRow}>
+              <CourseDot color={course.color} />
+              <Text style={styles.code}>{course.code}</Text>
+            </View>
             <Text style={styles.name}>{course.name}</Text>
           </View>
           <Text style={[styles.percent, { color: info.color }]}>
@@ -107,6 +111,10 @@ const styles = StyleSheet.create({
   titleBlock: {
     flex: 1,
     marginRight: 8,
+  },
+  codeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   code: {
     fontSize: 12,

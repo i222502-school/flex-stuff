@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { ProgressChart } from 'react-native-chart-kit';
+import CourseDot from './CourseDot';
 import { colors } from '../theme';
 
 const STROKE = 9;
@@ -11,8 +12,9 @@ const ringConfig = {
   color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
 };
 
-// One course's attendance as a single ring, with the % written in the middle.
-export default function AttendanceRing({ label, percent, color, size }) {
+// One course's attendance as a single ring in the course's colour, with the % in the middle
+// and its status (e.g. { text: 'Short', color: red }) underneath.
+export default function AttendanceRing({ label, percent, color, status, size }) {
   // A ring at exactly 100% is drawn as an empty arc, so stop just short of it
   const value = Math.min(percent / 100, 0.999);
 
@@ -30,10 +32,14 @@ export default function AttendanceRing({ label, percent, color, size }) {
           withCustomBarColorFromData
         />
         <View style={styles.center}>
-          <Text style={[styles.percent, { color }]}>{Math.round(percent)}%</Text>
+          <Text style={styles.percent}>{Math.round(percent)}%</Text>
         </View>
       </View>
-      <Text style={styles.label}>{label}</Text>
+      <View style={styles.labelRow}>
+        <CourseDot color={color} size={8} />
+        <Text style={styles.label}>{label}</Text>
+      </View>
+      <Text style={[styles.status, { color: status.color }]}>{status.text}</Text>
     </View>
   );
 }
@@ -55,11 +61,21 @@ const styles = StyleSheet.create({
   percent: {
     fontSize: 16,
     fontWeight: '800',
+    color: colors.text,
+  },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
   },
   label: {
     fontSize: 12,
     fontWeight: '700',
-    color: colors.subtext,
-    marginTop: 4,
+    color: colors.text,
+  },
+  status: {
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
   },
 });

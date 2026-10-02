@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Badge from './Badge';
 import Card from './Card';
+import CourseDot from './CourseDot';
 import PillButton from './PillButton';
 import { MAX_CREDIT_HOURS } from '../constants';
 import { getCreditHours } from '../utils/courses';
@@ -29,7 +30,10 @@ export default function CourseCard({ course, registeredSection, creditsLeft, onR
     <Card style={styles.card}>
       <View style={styles.top}>
         <View style={styles.titleBlock}>
-          <Text style={styles.code}>{course.code}</Text>
+          <View style={styles.codeRow}>
+            <CourseDot color={course.color} />
+            <Text style={styles.code}>{course.code}</Text>
+          </View>
           <Text style={styles.name}>{course.name}</Text>
         </View>
         {isRegistered && <Badge label={`Section ${registeredSection}`} tone="success" />}
@@ -100,6 +104,10 @@ const styles = StyleSheet.create({
   titleBlock: {
     flex: 1,
     marginRight: 8,
+  },
+  codeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   code: {
     fontSize: 12,
