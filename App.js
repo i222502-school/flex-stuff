@@ -4,13 +4,18 @@ import { useEffect, useState } from 'react';
 
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import RegistrationScreen from './src/screens/RegistrationScreen';
 import ScreenHeader from './src/components/ScreenHeader';
+import { initialRegistrations } from './src/data/courses';
 import { menuItems } from './src/data/menu';
 import { colors } from './src/theme';
 
 export default function App() {
   // Which screen is showing: 'home' or one of the menu keys ('marks', 'fee', ...)
   const [view, setView] = useState('home');
+
+  // Registered courses live here so every screen sees the same list
+  const [registrations, setRegistrations] = useState(initialRegistrations);
 
   // Android back button: go back to home instead of closing the app.
   // Re-registered whenever `view` changes; the old listener is removed first.
@@ -24,6 +29,17 @@ export default function App() {
     });
     return () => subscription.remove();
   }, [view]);
+
+  // Picks the screen for the current view
+  function renderScreen() {
+    if (view === 'profile') {
+      return <ProfileScreen />;
+    }
+    if (view === 'registration') {
+      return <RegistrationScreen registrations={registrations} setRegistrations={setRegistrations} />;
+    }
+    return <Text style={styles.placeholder}>Coming soon</Text>;
+  }
 
   if (view === 'home') {
     return (
@@ -40,9 +56,7 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="light" />
       <ScreenHeader title={currentItem.title} onBack={() => setView('home')} />
-
-      {view === 'profile' && <ProfileScreen />}
-      {view !== 'profile' && <Text style={styles.placeholder}>Coming soon</Text>}
+      {renderScreen()}
     </View>
   );
 }

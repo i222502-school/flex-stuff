@@ -12,6 +12,9 @@ export const CREDIT_HOURS = {
   lab: 1,
 };
 
+// Most credit hours a student can register in one semester
+export const MAX_CREDIT_HOURS = 18;
+
 // Tuition charged per credit hour (PKR)
 export const FEE_PER_CREDIT_HOUR = 10000;
 
