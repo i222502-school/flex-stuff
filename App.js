@@ -2,11 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import { BackHandler, Platform, StatusBar as RNStatusBar, StyleSheet, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
+import AttendanceScreen from './src/screens/AttendanceScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import MarksScreen from './src/screens/MarksScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import RegistrationScreen from './src/screens/RegistrationScreen';
 import ScreenHeader from './src/components/ScreenHeader';
+import { attendance } from './src/data/attendance';
 import { initialRegistrations } from './src/data/courses';
 import { menuItems } from './src/data/menu';
 import { colors } from './src/theme';
@@ -17,6 +19,9 @@ export default function App() {
 
   // Registered courses live here so every screen sees the same list
   const [registrations, setRegistrations] = useState(initialRegistrations);
+
+  // Attendance records too, so marking a class updates every screen (and the dashboard)
+  const [attendanceRecords, setAttendanceRecords] = useState(attendance);
 
   // Android back button: go back to home instead of closing the app.
   // Re-registered whenever `view` changes; the old listener is removed first.
@@ -41,6 +46,15 @@ export default function App() {
     }
     if (view === 'marks') {
       return <MarksScreen registrations={registrations} />;
+    }
+    if (view === 'attendance') {
+      return (
+        <AttendanceScreen
+          registrations={registrations}
+          attendance={attendanceRecords}
+          setAttendance={setAttendanceRecords}
+        />
+      );
     }
     return <Text style={styles.placeholder}>Coming soon</Text>;
   }
