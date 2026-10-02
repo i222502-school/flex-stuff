@@ -18,6 +18,21 @@ export const MAX_CREDIT_HOURS = 18;
 // Tuition charged per credit hour (PKR)
 export const FEE_PER_CREDIT_HOUR = 10000;
 
+// Minimum percentage for each grade, highest first (absolute grading)
+export const GRADE_SCALE = [
+  { grade: 'A', min: 86 },
+  { grade: 'A-', min: 82 },
+  { grade: 'B+', min: 78 },
+  { grade: 'B', min: 74 },
+  { grade: 'B-', min: 70 },
+  { grade: 'C+', min: 66 },
+  { grade: 'C', min: 62 },
+  { grade: 'C-', min: 58 },
+  { grade: 'D+', min: 54 },
+  { grade: 'D', min: 50 },
+  { grade: 'F', min: 0 },
+];
+
 // Weightage (out of 100) of each assessment type, by course type
 export const MARK_WEIGHTS = {
   theory: {

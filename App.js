@@ -3,6 +3,7 @@ import { BackHandler, Platform, StatusBar as RNStatusBar, StyleSheet, Text, View
 import { useEffect, useState } from 'react';
 
 import HomeScreen from './src/screens/HomeScreen';
+import MarksScreen from './src/screens/MarksScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import RegistrationScreen from './src/screens/RegistrationScreen';
 import ScreenHeader from './src/components/ScreenHeader';
@@ -37,6 +38,9 @@ export default function App() {
     }
     if (view === 'registration') {
       return <RegistrationScreen registrations={registrations} setRegistrations={setRegistrations} />;
+    }
+    if (view === 'marks') {
+      return <MarksScreen registrations={registrations} />;
     }
     return <Text style={styles.placeholder}>Coming soon</Text>;
   }
