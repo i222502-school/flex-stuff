@@ -18,6 +18,9 @@ export const MAX_CREDIT_HOURS = 18;
 // Tuition charged per credit hour (PKR)
 export const FEE_PER_CREDIT_HOUR = 10000;
 
+// Days a student has to pay a challan after it is generated
+export const CHALLAN_DUE_DAYS = 14;
+
 // Minimum percentage for each grade, highest first (absolute grading)
 export const GRADE_SCALE = [
   { grade: 'A', min: 86 },

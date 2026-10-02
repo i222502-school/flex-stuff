@@ -3,6 +3,7 @@ import { BackHandler, Platform, StatusBar as RNStatusBar, StyleSheet, Text, View
 import { useEffect, useState } from 'react';
 
 import AttendanceScreen from './src/screens/AttendanceScreen';
+import FeeScreen from './src/screens/FeeScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import MarksScreen from './src/screens/MarksScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -22,6 +23,9 @@ export default function App() {
 
   // Attendance records too, so marking a class updates every screen (and the dashboard)
   const [attendanceRecords, setAttendanceRecords] = useState(attendance);
+
+  // The generated fee challan (null until the student generates one)
+  const [challan, setChallan] = useState(null);
 
   // Android back button: go back to home instead of closing the app.
   // Re-registered whenever `view` changes; the old listener is removed first.
@@ -55,6 +59,9 @@ export default function App() {
           setAttendance={setAttendanceRecords}
         />
       );
+    }
+    if (view === 'fee') {
+      return <FeeScreen registrations={registrations} challan={challan} setChallan={setChallan} />;
     }
     return <Text style={styles.placeholder}>Coming soon</Text>;
   }

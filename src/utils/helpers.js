@@ -22,6 +22,23 @@ export function formatDate(dateString) {
   return `${Number(day)} ${MONTHS[Number(month) - 1]}`;
 }
 
+// '2026-10-03' -> '3 Oct 2026'
+export function formatLongDate(dateString) {
+  return `${formatDate(dateString)} ${dateString.slice(0, 4)}`;
+}
+
+// ('2026-10-03', 14) -> '2026-10-17'
+export function addDays(dateString, days) {
+  const date = new Date(dateString);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+// 130000 -> 'Rs 130,000'
+export function formatMoney(amount) {
+  return `Rs ${amount.toLocaleString('en-US')}`;
+}
+
 // Number of whole days from one 'YYYY-MM-DD' date to another
 export function daysBetween(from, to) {
   const msPerDay = 1000 * 60 * 60 * 24;
